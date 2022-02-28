@@ -1,0 +1,7 @@
+Prefix: "&6&l彩虹 &r&e> "
+
+Click-Gem-Is-Null: "&c您的背包中没有您刚点击的宝石!"
+Inlay-Succeeded: "&a镶嵌成功!"
+Inlay-Failed: "&a镶嵌失败!"
+Inlay-Not-Allowed: "&c该宝石不允许镶嵌到此类型的物品上!"
+Gem-Is-Selected: "&a宝石已成功选中, 请点击相应物品进行镶嵌!"

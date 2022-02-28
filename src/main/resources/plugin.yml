@@ -1,0 +1,11 @@
+name: YuriGem
+version: ${project.version}
+author: Yurinan
+
+main: me.yurinan.plugins.yurigem.Main
+api-version: 1.18
+
+commands:
+  yurigem:
+    aliases: gem
+    description: The main command of the plugin, used to view the content of the plugin body.
