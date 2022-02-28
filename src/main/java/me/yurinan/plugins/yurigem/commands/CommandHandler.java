@@ -59,6 +59,8 @@ public class CommandHandler implements TabExecutor {
                     item.setAmount(Integer.parseInt(args[2]));
                     player.getInventory().addItem(item);
                     MessageUtil.send(player, PluginMessages.PREFIX + "&a您获得了 &e" + args[2] + item.getItemMeta().getDisplayName() + "!");
+                } else {
+                    MessageUtil.send(player, PluginMessages.PREFIX + "&c给予错误, 请检查!");
                 }
                 return true;
             } else {

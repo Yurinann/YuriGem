@@ -58,17 +58,17 @@ public class FileManager {
         }
         Main.log("" + gemList.toString());
 
-        for (int i = 1; i <= getMessageConfig().getKeys(false).size(); ++i) {
-            if (getMessageConfig().getConfigurationSection("Item" + i) != null) {
+        for (int i = 1; i <= getGemConfig().getKeys(false).size(); ++i) {
+            if (getGemConfig().getConfigurationSection("Item" + i) != null) {
                 ItemStack is = new ItemStack(Material.STONE);
                 ItemMeta im = is.getItemMeta();
-                im.setDisplayName(getMessageConfig().getString("Item" + i + ".DisplayName"));
-                im.setLore(getMessageConfig().getStringList("Item" + i + ".Lore"));
+                im.setDisplayName(getGemConfig().getString("Item" + i + ".DisplayName"));
+                im.setLore(getGemConfig().getStringList("Item" + i + ".Lore"));
                 im.addEnchant(Enchantment.DAMAGE_UNDEAD, 1, true);
                 is.setItemMeta(im);
-                is.setType(Material.valueOf(getMessageConfig().getString("Item" + i + ".Id")));
+                is.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Id")));
                 Items.put("Item" + i, is);
-                ItemNameCheck.put(getMessageConfig().getString("Item" + i + ".DisplayName"), "Item" + i);
+                ItemNameCheck.put(getGemConfig().getString("Item" + i + ".DisplayName"), "Item" + i);
             }
         }
     }
