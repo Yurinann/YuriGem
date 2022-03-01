@@ -45,7 +45,7 @@ public class PlayerInlayListener implements Listener {
                     ItemStack item = event.getCurrentItem();
                     if (item != null) {
                         String allowInlayItem = gemConfig.getString(ItemSelect.get(player) + ".AllowInlayItemList");
-                        String[] allowInlayItemList = Objects.requireNonNull(allowInlayItem).split(",");
+                        String[] allowInlayItemList = Objects.requireNonNull(allowInlayItem).replaceAll(" ", "").split(",");
                         int checkTime = 0;
                         for (String s : allowInlayItemList) {
                             if (Objects.equals(String.valueOf(currentMaterial).toUpperCase(), s)) {
