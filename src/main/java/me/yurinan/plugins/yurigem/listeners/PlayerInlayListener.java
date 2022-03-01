@@ -38,24 +38,27 @@ public class PlayerInlayListener implements Listener {
             Player player = (Player) event.getWhoClicked();
             // 判断右键点击的物品不为 null (3)
             if (event.getCurrentItem() != null) {
-                // 判断
+                // 判断 ItemSelect Map 中是否有 Player (4)
                 if (ItemSelect.containsKey(player)) {
                     event.setCancelled(true);
                     Material currentMaterial = Material.valueOf(String.valueOf(event.getCurrentItem().getType()));
-                    Main.debug(String.valueOf(currentMaterial));
                     ItemStack item = event.getCurrentItem();
                     if (item != null) {
                         String allowInlayItem = gemConfig.getString(ItemSelect.get(player) + ".AllowInlayItemList");
                         String[] allowInlayItemList = Objects.requireNonNull(allowInlayItem).split(",");
-                        Main.debug(allowInlayItem);
-                        for (String ignored : allowInlayItemList) {
-                            if (Objects.equals(String.valueOf(currentMaterial).toUpperCase(), allowInlayItem)) {
-                                MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.INLAY_NOT_ALLOWED);
-                                event.setCancelled(true);
-                                player.closeInventory();
-                                ItemSelect.remove(player);
-                                return;
+                        int checkTime = 0;
+                        for (String s : allowInlayItemList) {
+                            if (Objects.equals(String.valueOf(currentMaterial).toUpperCase(), s)) {
+                                ++checkTime;
+                                break;
                             }
+                        }
+                        if (checkTime != 1) {
+                            MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.INLAY_NOT_ALLOWED);
+                            event.setCancelled(true);
+                            player.closeInventory();
+                            ItemSelect.remove(player);
+                            return;
                         }
 
                         String selectGem = ItemSelect.get(player);
@@ -106,13 +109,11 @@ public class PlayerInlayListener implements Listener {
                                 }
                             }
                             if (loreLoc == -1) {
-                                list.add(ColorParser.parse(PluginMessages.LORE_HEAD));
-                                list.add(ColorParser.parse(successLore));
-                                list.add(ColorParser.parse(PluginMessages.LORE_END));
+                                list.add(successLore);
                             } else {
                                 list.add(loreLoc, successLore);
                             }
-                            meta.setLore(list);
+                            meta.setLore(list.stream().map(ColorParser::parse).collect(Collectors.toList()));
                             item.setItemMeta(meta);
                             MessageUtil.send(player, PluginMessages.INLAY_SUCCEEDED);
                         } else {
