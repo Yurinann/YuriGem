@@ -11,14 +11,14 @@ Item1:
   DisplayName: '&c力量宝石'
   # 宝石 Lore
   Lore:
-    - '&c力量宝石'
+    - ''
     - '&7用法: &a在物品栏中右键宝石 再右键要镶嵌的物品'
     - '&7适用: &b剑/弓/斧头'
   # 宝石成功几率 (%)
   SuccessChance: 100
   # 宝石镶嵌成功后的 Lore
   SuccessLore: '&c物理伤害: +1'
-  #允许镶嵌的物品ID
+  # 允许镶嵌的物品ID
   AllowInlayItemList: WOODEN_SWORD,STONE_SWORD,IRON_SWORD,GOLDEN_SWORD,DIAMOND_SWORD,NETHERITE_SWORD
 
 Item2:

@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Yurinan
@@ -25,22 +26,26 @@ import java.util.*;
 
 public class PlayerInlayListener implements Listener {
 
-    public static Map<Player, String> Click = Main.Click;
+    public static Map<Player, String> ItemSelect = Main.ItemSelect;
     public static Map<String, String> ItemNameCheck = Main.ItemNameCheck;
     public static FileConfiguration gemConfig = FileManager.getGemConfig();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        // 判断是否使用右键点击 Inventory (1)
         if (event.getClick() == ClickType.RIGHT) {
+            // 获取右键点击 Inventory 触发事件的玩家实例 (2)
             Player player = (Player) event.getWhoClicked();
+            // 判断右键点击的物品不为 null (3)
             if (event.getCurrentItem() != null) {
-                if (Click.containsKey(player)) {
+                // 判断
+                if (ItemSelect.containsKey(player)) {
                     event.setCancelled(true);
                     Material currentMaterial = Material.valueOf(String.valueOf(event.getCurrentItem().getType()));
                     Main.debug(String.valueOf(currentMaterial));
                     ItemStack item = event.getCurrentItem();
                     if (item != null) {
-                        String allowInlayItem = gemConfig.getString(Click.get(player) + ".allowInlayItemList");
+                        String allowInlayItem = gemConfig.getString(ItemSelect.get(player) + ".AllowInlayItemList");
                         String[] allowInlayItemList = Objects.requireNonNull(allowInlayItem).split(",");
                         Main.debug(allowInlayItem);
                         for (String ignored : allowInlayItemList) {
@@ -48,16 +53,16 @@ public class PlayerInlayListener implements Listener {
                                 MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.INLAY_NOT_ALLOWED);
                                 event.setCancelled(true);
                                 player.closeInventory();
-                                Click.remove(player);
+                                ItemSelect.remove(player);
                                 return;
                             }
                         }
 
-                        String selectGem = Click.get(player);
+                        String selectGem = ItemSelect.get(player);
                         ItemMeta meta = item.getItemMeta();
-                        if (!GemManager.selectGem(player, gemConfig.getString(selectGem + ".DisplayName"))) {
+                        if (!GemManager.selectGem(player, ColorParser.parse(gemConfig.getString(selectGem + ".DisplayName")))) {
                             MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.CLICK_GEM_IS_NULL);
-                            Click.remove(player);
+                            ItemSelect.remove(player);
                             player.closeInventory();
                             return;
                         }
@@ -71,10 +76,10 @@ public class PlayerInlayListener implements Listener {
                             loreNumber = random.nextInt(100) + 1;
                             List<String> gemAllLore = new ArrayList<>();
                             if (loreNumber <= successChance) {
-                                gemAllLore.add(ColorParser.parse(PluginMessages.LORE_HEAD));
+                                gemAllLore.add(PluginMessages.LORE_HEAD);
                                 gemAllLore.add(gemLore);
-                                gemAllLore.add(ColorParser.parse(PluginMessages.LORE_END));
-                                meta.setLore(gemAllLore);
+                                gemAllLore.add(PluginMessages.LORE_END);
+                                meta.setLore(gemAllLore.stream().map(ColorParser::parse).collect(Collectors.toList()));
                                 item.setItemMeta(meta);
                                 MessageUtil.send(player, PluginMessages.INLAY_SUCCEEDED);
                             } else {
@@ -82,7 +87,7 @@ public class PlayerInlayListener implements Listener {
                             }
                             player.closeInventory();
                             player.updateInventory();
-                            Click.remove(player);
+                            ItemSelect.remove(player);
                             return;
                         }
 
@@ -101,9 +106,9 @@ public class PlayerInlayListener implements Listener {
                                 }
                             }
                             if (loreLoc == -1) {
-                                list.add(PluginMessages.LORE_HEAD);
-                                list.add(successLore);
-                                list.add(PluginMessages.LORE_END);
+                                list.add(ColorParser.parse(PluginMessages.LORE_HEAD));
+                                list.add(ColorParser.parse(successLore));
+                                list.add(ColorParser.parse(PluginMessages.LORE_END));
                             } else {
                                 list.add(loreLoc, successLore);
                             }
@@ -115,17 +120,16 @@ public class PlayerInlayListener implements Listener {
                         }
                         player.closeInventory();
                         player.updateInventory();
-                        Click.remove(player);
+                        ItemSelect.remove(player);
                         return;
                     }
-
-                    String gem = this.checkItem(event.getCurrentItem());
-                    if (gem != null) {
-                        Click.put(player, gem);
-                        event.setCancelled(true);
-                        player.closeInventory();
-                        MessageUtil.send(player, PluginMessages.GEM_IS_SELECTED);
-                    }
+                }
+                String gem = this.checkItem(event.getCurrentItem());
+                if (gem != null) {
+                    ItemSelect.put(player, gem);
+                    event.setCancelled(true);
+                    player.closeInventory();
+                    MessageUtil.send(player, PluginMessages.GEM_IS_SELECTED);
                 }
             }
         }

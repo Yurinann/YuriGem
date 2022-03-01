@@ -11,9 +11,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class PluginMessages {
 
     public static FileConfiguration messageConfig = FileManager.getMessageConfig();
+    public static FileConfiguration gemConfig = FileManager.getGemConfig();
 
-    public static final String LORE_HEAD = messageConfig.getString("Lore-Head");
-    public static final String LORE_END = messageConfig.getString("Lore-End");
+    public static final String LORE_HEAD = gemConfig.getString("Lore-Head");
+    public static final String LORE_END = gemConfig.getString("Lore-End");
 
     public static final String PREFIX = messageConfig.getString("Prefix");
     public static final String CLICK_GEM_IS_NULL = messageConfig.getString("Click-Gem-Is-Null");

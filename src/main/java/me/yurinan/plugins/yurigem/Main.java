@@ -31,9 +31,9 @@ public final class Main extends JavaPlugin {
 
     public static Main instance;
 
-    public static Map<Player, String> Click;
+    public static Map<Player, String> ItemSelect;
     public static Map<String, String> ItemNameCheck;
-    public static List<String> gemList;
+    public static List<String> GemList;
     public static Map<String, ItemStack> Items;
 
     @Override
@@ -42,9 +42,9 @@ public final class Main extends JavaPlugin {
         log("&f插件开始加载...");
         long startTime = System.currentTimeMillis();
         log("&f加载内部数据...");
-        Click = new HashMap<>();
+        ItemSelect = new HashMap<>();
         ItemNameCheck = new HashMap<>();
-        gemList = new ArrayList<>();
+        GemList = new ArrayList<>();
         Items = new HashMap<>();
         log("&f加载配置文件...");
         FileManager.initConfig();

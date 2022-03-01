@@ -2,6 +2,7 @@ package me.yurinan.plugins.yurigem.managers;
 
 import com.google.common.base.Charsets;
 import me.yurinan.plugins.yurigem.Main;
+import me.yurinan.plugins.yurigem.utils.ColorParser;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Yurinan
@@ -24,7 +26,7 @@ import java.util.Map;
 
 public class FileManager {
 
-    public static List<String> gemList = Main.gemList;
+    public static List<String> GemList = Main.GemList;
     public static Map<String, String> ItemNameCheck = Main.ItemNameCheck;
     public static Map<String, ItemStack> Items = Main.Items;
 
@@ -53,22 +55,22 @@ public class FileManager {
 
         for (String str : getGemConfig().getKeys(false)) {
             if (!"Lore-Head".equalsIgnoreCase(str) && !"Lore-End".equalsIgnoreCase(str)) {
-                gemList.add(str);
+                GemList.add(ColorParser.parse(str));
             }
         }
-        Main.log("" + gemList.toString());
+        Main.log(GemList.toString());
 
         for (int i = 1; i <= getGemConfig().getKeys(false).size(); ++i) {
             if (getGemConfig().getConfigurationSection("Item" + i) != null) {
                 ItemStack is = new ItemStack(Material.STONE);
                 ItemMeta im = is.getItemMeta();
-                im.setDisplayName(getGemConfig().getString("Item" + i + ".DisplayName"));
-                im.setLore(getGemConfig().getStringList("Item" + i + ".Lore"));
+                im.setDisplayName(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")));
+                im.setLore(getGemConfig().getStringList("Item" + i + ".Lore").stream().map(ColorParser::parse).collect(Collectors.toList()));
                 im.addEnchant(Enchantment.DAMAGE_UNDEAD, 1, true);
                 is.setItemMeta(im);
                 is.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Id")));
                 Items.put("Item" + i, is);
-                ItemNameCheck.put(getGemConfig().getString("Item" + i + ".DisplayName"), "Item" + i);
+                ItemNameCheck.put(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")), "Item" + i);
             }
         }
     }

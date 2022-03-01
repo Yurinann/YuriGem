@@ -40,7 +40,7 @@ public class CommandHandler implements TabExecutor {
                 MessageUtil.send(sender, "&a▶ /yurigem reload - 重载配置文件");
                 return true;
             } else if ("list".equalsIgnoreCase(args[0])) {
-                MessageUtil.send(sender, PluginMessages.PREFIX + "&a当前可用的宝石列表: " + Main.gemList.toString());
+                MessageUtil.send(sender, PluginMessages.PREFIX + "&a当前可用的宝石列表: " + Main.GemList.toString());
             } else if ("reload".equalsIgnoreCase(args[0])) {
                 FileManager.reloadAllConfig();
                 MessageUtil.send(sender, PluginMessages.PREFIX + "配置文件已成功重载!");
