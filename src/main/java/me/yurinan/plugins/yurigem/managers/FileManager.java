@@ -54,6 +54,7 @@ public class FileManager {
             Main.instance.saveResource("gems.yml", false);
         }
 
+        GemList.clear();
         for (String str : getGemConfig().getKeys(false)) {
             if (!"Lore-Head".equalsIgnoreCase(str) && !"Lore-End".equalsIgnoreCase(str)) {
                 GemList.add(ColorParser.parse(str));
@@ -165,6 +166,7 @@ public class FileManager {
     }
 
     public static void reloadAllConfig() {
+        initConfig();
         reloadConfig();
         reloadMessageConfig();
         reloadGemConfig();

@@ -1,7 +1,7 @@
 # 宝石 Lore 头部
-Lore-Head: '&6&l—— &e&l宝石属性 &6&l——'
+Lore-Head: '&6&l▶ &e&l宝石属性'
 # 宝石 Lore 尾部
-Lore-End: '&6&l—— &e&l宝石属性 &6&l——'
+Lore-End: ''
 
 # 宝石代码 (1.0.0: Must be "Item" + "<int> x")
 Item1:
