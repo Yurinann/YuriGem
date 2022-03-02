@@ -56,7 +56,7 @@ public class FileManager {
 
         GemList.clear();
         for (String str : getGemConfig().getKeys(false)) {
-            if (!"Lore-Head".equalsIgnoreCase(str) && !"Lore-End".equalsIgnoreCase(str)) {
+            if (!"Lore-Head".equalsIgnoreCase(str)) {
                 GemList.add(ColorParser.parse(str));
             }
         }

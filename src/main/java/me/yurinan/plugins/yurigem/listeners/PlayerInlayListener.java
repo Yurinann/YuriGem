@@ -84,9 +84,9 @@ public class PlayerInlayListener implements Listener {
                             loreNumber = random.nextInt(100) + 1;
                             List<String> gemAllLore = new ArrayList<>();
                             if (loreNumber <= successChance) {
+                                gemAllLore.add("");
                                 gemAllLore.add(PluginMessages.LORE_HEAD);
                                 gemAllLore.add(gemLore);
-                                gemAllLore.add(PluginMessages.LORE_END);
                                 meta.setLore(gemAllLore.stream().map(ColorParser::parse).collect(Collectors.toList()));
                                 item.setItemMeta(meta);
                                 MessageUtil.send(player, PluginMessages.INLAY_SUCCEEDED);
