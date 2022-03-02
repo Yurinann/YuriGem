@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -58,18 +59,19 @@ public class FileManager {
                 GemList.add(ColorParser.parse(str));
             }
         }
-        Main.log(GemList.toString());
+        Main.log("&f读取到的宝石: &8" + GemList.toString());
 
         for (int i = 1; i <= getGemConfig().getKeys(false).size(); ++i) {
             if (getGemConfig().getConfigurationSection("Item" + i) != null) {
-                ItemStack is = new ItemStack(Material.STONE);
-                ItemMeta im = is.getItemMeta();
-                im.setDisplayName(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")));
-                im.setLore(getGemConfig().getStringList("Item" + i + ".Lore").stream().map(ColorParser::parse).collect(Collectors.toList()));
-                im.addEnchant(Enchantment.DAMAGE_UNDEAD, 1, true);
-                is.setItemMeta(im);
-                is.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Id")));
-                Items.put("Item" + i, is);
+                ItemStack item = new ItemStack(Material.STONE);
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")));
+                meta.setLore(getGemConfig().getStringList("Item" + i + ".Lore").stream().map(ColorParser::parse).collect(Collectors.toList()));
+                meta.addEnchant(Enchantment.DURABILITY, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                item.setItemMeta(meta);
+                item.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Id")));
+                Items.put("Item" + i, item);
                 ItemNameCheck.put(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")), "Item" + i);
             }
         }

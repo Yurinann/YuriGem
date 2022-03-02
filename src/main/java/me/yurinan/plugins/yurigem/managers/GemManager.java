@@ -14,7 +14,14 @@ import java.util.Objects;
 
 public class GemManager {
 
-    public static boolean selectGem(Player player, String gem) {
+    /**
+     * 移除选定宝石
+     *
+     * @param player 获取指定玩家的物品栏
+     * @param gem 获取选定的宝石
+     * @return true: 已移除 / false: 未移除
+     */
+    public static boolean removeGem(Player player, String gem) {
         PlayerInventory inventory = player.getInventory();
         for (int i = 0; i < inventory.getSize(); ++i) {
             ItemStack item = inventory.getItem(i);

@@ -54,20 +54,24 @@ public class CommandHandler implements TabExecutor {
                 }
             } else if (args.length == 4) {
                 if ("give".equalsIgnoreCase(args[0])) {
-                    Player player = Bukkit.getPlayer(args[3]);
-                    if (player == null) {
-                        MessageUtil.send(sender, PluginMessages.PREFIX + "&c指定的玩家可能不存在或已离线!");
+                    if (args[2].matches("^-?[1-9]\\d*$")) {
+                        Player player = Bukkit.getPlayer(args[3]);
+                        if (player == null) {
+                            MessageUtil.send(sender, PluginMessages.PREFIX + "&c指定的玩家可能不存在或已离线!");
+                            return true;
+                        }
+                        ItemStack item = Items.get(args[1]);
+                        if (item != null) {
+                            item.setAmount(Integer.parseInt(args[2]));
+                            player.getInventory().addItem(item);
+                            MessageUtil.send(player, PluginMessages.PREFIX + "&a您获得了 &e" + args[2] + "个 " + item.getItemMeta().getDisplayName() + "&a!");
+                        } else {
+                            MessageUtil.send(player, PluginMessages.PREFIX + "&c给予错误, 请检查!");
+                        }
                         return true;
-                    }
-                    ItemStack item = Items.get(args[1]);
-                    if (item != null) {
-                        item.setAmount(Integer.parseInt(args[2]));
-                        player.getInventory().addItem(item);
-                        MessageUtil.send(player, PluginMessages.PREFIX + "&a您获得了 &e" + args[2] + "个 " + item.getItemMeta().getDisplayName() + "&a!");
                     } else {
-                        MessageUtil.send(player, PluginMessages.PREFIX + "&c给予错误, 请检查!");
+                        MessageUtil.send(sender, PluginMessages.PREFIX + "&c请指定一个宝石整数数量!");
                     }
-                    return true;
                 } else {
                     MessageUtil.send(sender, PluginMessages.PREFIX + "&c错误的用法, 请使用 /yurigem help 查看插件帮助!");
                 }

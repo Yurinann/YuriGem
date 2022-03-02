@@ -30,19 +30,24 @@ public class PlayerInlayListener implements Listener {
     public static Map<String, String> ItemNameCheck = Main.ItemNameCheck;
     public static FileConfiguration gemConfig = FileManager.getGemConfig();
 
+    /**
+     * 处理玩家镶嵌。
+     *
+     * @param clickEvent InventoryClickEvent 点击事件, 判断宝石选择
+     */
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onPlayerInlay(InventoryClickEvent clickEvent) {
         // 判断是否使用右键点击 Inventory (1)
-        if (event.getClick() == ClickType.RIGHT) {
+        if (clickEvent.getClick() == ClickType.RIGHT) {
             // 获取右键点击 Inventory 触发事件的玩家实例 (2)
-            Player player = (Player) event.getWhoClicked();
-            // 判断右键点击的物品不为 null (3)
-            if (event.getCurrentItem() != null) {
+            Player player = (Player) clickEvent.getWhoClicked();
+            // 判断右键点击的物品不为 null 或 空气 (3)
+            if (clickEvent.getCurrentItem() != null && clickEvent.getCurrentItem().getType() != Material.AIR) {
                 // 判断 ItemSelect Map 中是否有 Player (4)
                 if (ItemSelect.containsKey(player)) {
-                    event.setCancelled(true);
-                    Material currentMaterial = Material.valueOf(String.valueOf(event.getCurrentItem().getType()));
-                    ItemStack item = event.getCurrentItem();
+                    clickEvent.setCancelled(true);
+                    Material currentMaterial = Material.valueOf(String.valueOf(clickEvent.getCurrentItem().getType()));
+                    ItemStack item = clickEvent.getCurrentItem();
                     if (item != null) {
                         String allowInlayItem = gemConfig.getString(ItemSelect.get(player) + ".AllowInlayItemList");
                         String[] allowInlayItemList = Objects.requireNonNull(allowInlayItem).replaceAll(" ", "").split(",");
@@ -55,15 +60,14 @@ public class PlayerInlayListener implements Listener {
                         }
                         if (checkTime != 1) {
                             MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.INLAY_NOT_ALLOWED);
-                            event.setCancelled(true);
-                            player.closeInventory();
+                            clickEvent.setCancelled(true);
                             ItemSelect.remove(player);
+                            player.closeInventory();
                             return;
                         }
 
                         String selectGem = ItemSelect.get(player);
-                        ItemMeta meta = item.getItemMeta();
-                        if (!GemManager.selectGem(player, ColorParser.parse(gemConfig.getString(selectGem + ".DisplayName")))) {
+                        if (!GemManager.removeGem(player, ColorParser.parse(gemConfig.getString(selectGem + ".DisplayName")))) {
                             MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.CLICK_GEM_IS_NULL);
                             ItemSelect.remove(player);
                             player.closeInventory();
@@ -72,6 +76,7 @@ public class PlayerInlayListener implements Listener {
 
                         int successChance;
                         int loreNumber;
+                        ItemMeta meta = item.getItemMeta();
                         if (!meta.hasLore()) {
                             String gemLore = gemConfig.getString(selectGem + ".SuccessLore");
                             successChance = gemConfig.getInt(selectGem + ".SuccessChance");
@@ -122,13 +127,12 @@ public class PlayerInlayListener implements Listener {
                         player.closeInventory();
                         player.updateInventory();
                         ItemSelect.remove(player);
-                        return;
                     }
                 }
-                String gem = this.checkItem(event.getCurrentItem());
+                String gem = this.checkItem(clickEvent.getCurrentItem());
                 if (gem != null) {
                     ItemSelect.put(player, gem);
-                    event.setCancelled(true);
+                    clickEvent.setCancelled(true);
                     player.closeInventory();
                     MessageUtil.send(player, PluginMessages.GEM_IS_SELECTED);
                 }
