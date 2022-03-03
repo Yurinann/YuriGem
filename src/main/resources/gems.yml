@@ -1,31 +1,58 @@
 # 宝石 Lore 头部
 Lore-Head: '&6&l▶ &e&l宝石属性'
 
-# 宝石代码 (1.0.0: Must be "Item" + "<int> x")
+# 宝石代码 (当前必须为 "Item" + "<int> x")
 Item1:
   # 物品代码
-  Id: RED_DYE
+  Type: LAPIS_LAZULI
   # 宝石名称
-  DisplayName: '&c力量宝石'
+  DisplayName: '&b&l✦青曜之源✦ &7(&aLv.1&7)'
   # 宝石 Lore
   Lore:
-    - ''
     - '&7用法: &a在物品栏中右键宝石 再右键要镶嵌的物品'
-    - '&7适用: &b剑/弓/斧头'
-  # 宝石成功几率 (%)
+    - '&7适用: &b剑/斧/弓'
+    - '&7属性: &3物理伤害 +1'
+  # 宝石镶嵌成功几率 (%, 此处最多 100)
   SuccessChance: 100
   # 宝石镶嵌成功后的 Lore
-  SuccessLore: '&c物理伤害: +1'
-  # 允许镶嵌的物品ID
-  AllowInlayItemList: WOODEN_SWORD, STONE_SWORD, IRON_SWORD, GOLDEN_SWORD, DIAMOND_SWORD, NETHERITE_SWORD
+  SuccessLore: '&a物理伤害 +1'
+  # 宝石镶嵌成功后是否发送公告 (在 messages.yml 中修改公告内容)
+  SuccessBroadcast: true
+  # 允许镶嵌的物品 ID
+  AllowInlayItemList:
+    - WOODEN_SWORD
+    - STONE_SWORD
+    - IRON_SWORD
+    - GOLDEN_SWORD
+    - DIAMOND_SWORD
+    - NETHERITE_SWORD
+    - WOODEN_AXE
+    - STONE_AXE
+    - IRON_AXE
+    - GOLDEN_AXE
+    - DIAMOND_AXE
+    - NETHERITE_AXE
+    - BOW
 
 Item2:
-  Id: RED_DYE
-  DisplayName: '&c力量宝石2'
+  Type: LAPIS_LAZULI
+  DisplayName: '&b&l✦青曜之源✦ &7(&aLv.2&7)'
   Lore:
-    - ''
     - '&7用法: &a在物品栏中右键宝石 再右键要镶嵌的物品'
-    - '&7适用: &b剑/弓/斧头'
+    - '&7适用: &b剑/斧/弓'
   SuccessChance: 100
-  SuccessLore: '&c物理伤害: +1'
-  AllowInlayItemList: WOODEN_SWORD, STONE_SWORD, IRON_SWORD, GOLDEN_SWORD, DIAMOND_SWORD, NETHERITE_SWORD
+  SuccessLore: '&a物理伤害 +1.5'
+  AllowInlayItemList:
+    - WOODEN_SWORD
+    - STONE_SWORD
+    - IRON_SWORD
+    - GOLDEN_SWORD
+    - DIAMOND_SWORD
+    - NETHERITE_SWORD
+    - WOODEN_AXE
+    - STONE_AXE
+    - IRON_AXE
+    - GOLDEN_AXE
+    - DIAMOND_AXE
+    - NETHERITE_AXE
+    - BOW

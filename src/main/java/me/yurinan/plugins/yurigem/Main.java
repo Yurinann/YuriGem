@@ -5,20 +5,20 @@ import me.yurinan.plugins.yurigem.listeners.PlayerInlayListener;
 import me.yurinan.plugins.yurigem.managers.ConfigManager;
 import me.yurinan.plugins.yurigem.managers.FileManager;
 import me.yurinan.plugins.yurigem.utils.ColorParser;
+import me.yurinan.plugins.yurigem.utils.DataUtil;
 import me.yurinan.plugins.yurigem.utils.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,6 @@ public final class Main extends JavaPlugin {
 
     public static Main instance;
 
-    public static Map<Player, String> ItemSelect;
     public static Map<String, String> ItemNameCheck;
     public static List<String> GemList;
     public static Map<String, ItemStack> Items;
@@ -42,10 +41,8 @@ public final class Main extends JavaPlugin {
         log("&f插件开始加载...");
         long startTime = System.currentTimeMillis();
         log("&f加载内部数据...");
-        ItemSelect = new HashMap<>();
-        ItemNameCheck = new HashMap<>();
-        GemList = new ArrayList<>();
-        Items = new HashMap<>();
+        DataUtil dataUtil = new DataUtil();
+        dataUtil.initPluginData();
         log("&f加载配置文件...");
         FileManager.initConfig();
         log("&f注册监听器...");
@@ -61,6 +58,8 @@ public final class Main extends JavaPlugin {
         long closeTime = System.currentTimeMillis();
         log("&f保存配置文件...");
         FileManager.saveAllConfig();
+        log("&f卸载监听器...");
+        HandlerList.unregisterAll(this);
         log("&3插件卸载完成, 共耗时 &b" + (System.currentTimeMillis() - closeTime) + " &3ms.");
     }
 

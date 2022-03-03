@@ -18,6 +18,7 @@ public class PluginMessages {
     public static final String PREFIX = messageConfig.getString("Prefix");
     public static final String CLICK_GEM_IS_NULL = messageConfig.getString("Click-Gem-Is-Null");
     public static final String INLAY_SUCCEEDED = messageConfig.getString("Inlay-Succeeded");
+    public static final String INLAY_SUCCEEDED_BROADCAST = messageConfig.getString("Inlay-Succeeded-Broadcast");
     public static final String INLAY_FAILED = messageConfig.getString("Inlay-Failed");
     public static final String INLAY_NOT_ALLOWED = messageConfig.getString("Inlay-Not-Allowed");
     public static final String GEM_IS_SELECTED = messageConfig.getString("Gem-Is-Selected");

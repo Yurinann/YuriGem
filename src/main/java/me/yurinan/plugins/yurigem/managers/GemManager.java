@@ -21,7 +21,7 @@ public class GemManager {
      * @param gem 获取选定的宝石
      * @return true: 已移除 / false: 未移除
      */
-    public static boolean removeGem(Player player, String gem) {
+    public boolean removeGem(Player player, String gem) {
         PlayerInventory inventory = player.getInventory();
         for (int i = 0; i < inventory.getSize(); ++i) {
             ItemStack item = inventory.getItem(i);

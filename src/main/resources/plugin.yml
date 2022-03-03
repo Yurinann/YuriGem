@@ -1,5 +1,6 @@
 name: YuriGem
 version: ${project.version}
+description: A high version gem plugin, a remake of FantuanGem.
 author: Yurinan
 
 main: me.yurinan.plugins.yurigem.Main

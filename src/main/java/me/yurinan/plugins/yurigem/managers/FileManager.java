@@ -3,6 +3,7 @@ package me.yurinan.plugins.yurigem.managers;
 import com.google.common.base.Charsets;
 import me.yurinan.plugins.yurigem.Main;
 import me.yurinan.plugins.yurigem.utils.ColorParser;
+import me.yurinan.plugins.yurigem.utils.DataUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -27,18 +26,14 @@ import java.util.stream.Collectors;
 
 public class FileManager {
 
-    public static List<String> GemList = Main.GemList;
-    public static Map<String, String> ItemNameCheck = Main.ItemNameCheck;
-    public static Map<String, ItemStack> Items = Main.Items;
-
     private static FileConfiguration newConfig = null;
     private static FileConfiguration newMessageConfig = null;
     private static FileConfiguration newGemConfig = null;
 
-    public static File dataFolder = Main.instance.getDataFolder();
-    public static File configFile = new File(dataFolder + "/config.yml");
-    public static File messageFile = new File(dataFolder + "/messages.yml");
-    public static File gemFile = new File(dataFolder + "/gems.yml");
+    private static final File dataFolder = Main.instance.getDataFolder();
+    private static final File configFile = new File(dataFolder + "/config.yml");
+    private static final File messageFile = new File(dataFolder + "/messages.yml");
+    private static final File gemFile = new File(dataFolder + "/gems.yml");
 
     public static void initConfig() {
         if (!dataFolder.exists()) {
@@ -54,13 +49,14 @@ public class FileManager {
             Main.instance.saveResource("gems.yml", false);
         }
 
-        GemList.clear();
+        DataUtil dataUtil = new DataUtil();
+        dataUtil.getGemList().clear();
         for (String str : getGemConfig().getKeys(false)) {
             if (!"Lore-Head".equalsIgnoreCase(str)) {
-                GemList.add(ColorParser.parse(str));
+                dataUtil.getGemList().add(ColorParser.parse(str));
             }
         }
-        Main.log("&f读取到的宝石: &8" + GemList.toString());
+        Main.log("&f读取到的宝石: &8" + dataUtil.getGemList().toString());
 
         for (int i = 1; i <= getGemConfig().getKeys(false).size(); ++i) {
             if (getGemConfig().getConfigurationSection("Item" + i) != null) {
@@ -71,9 +67,9 @@ public class FileManager {
                 meta.addEnchant(Enchantment.DURABILITY, 1, true);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 item.setItemMeta(meta);
-                item.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Id")));
-                Items.put("Item" + i, item);
-                ItemNameCheck.put(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")), "Item" + i);
+                item.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Type")));
+                dataUtil.getGemMap().put("Item" + i, item);
+                dataUtil.getGemNameCheckMap().put(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")), "Item" + i);
             }
         }
     }

@@ -12,8 +12,8 @@ public class ColorParseTest {
     public void onTest() {
         String testString = "&fI send my thoughts from time immemorial to eternity to HunYou. I had flipped, completely.";
         String testHexString = "&(#FFFFFF)You can do you want cause I love you, baby. --- << Indulge >>";
-        System.out.println(ColorParser.parseColor(testString));
-        System.out.println(ColorParser.parseHexColor(testHexString));
+        System.out.println(ColorParser.parse(testString));
+        System.out.println(ColorParser.parse(testHexString));
     }
 
 }
