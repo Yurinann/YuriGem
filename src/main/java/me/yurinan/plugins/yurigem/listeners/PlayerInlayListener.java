@@ -116,7 +116,7 @@ public class PlayerInlayListener implements Listener {
                                 }
                             }
                             if (loreLoc == -1) {
-                                list.add(gemDisplayName + "&a-" + successLore);
+                                list.add(gemDisplayName + " &a- " + successLore);
                             } else {
                                 list.add(loreLoc, gemDisplayName + " &a- " + successLore);
                             }
