@@ -160,10 +160,10 @@ public class FileManager {
     }
 
     public static void reloadAllConfig() {
-        initConfig();
         reloadConfig();
         reloadMessageConfig();
         reloadGemConfig();
+        initConfig();
     }
 
 }

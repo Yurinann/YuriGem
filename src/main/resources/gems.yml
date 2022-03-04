@@ -5,6 +5,8 @@ Lore-Head: '&6&l▶ &e&l宝石属性'
 Item1:
   # 物品代码
   Type: LAPIS_LAZULI
+  # 宝石类型 (攻击: 防御:)
+  # GemType:
   # 宝石名称
   DisplayName: '&b&l✦青曜之源✦ &7(&aLv.1&7)'
   # 宝石 Lore
