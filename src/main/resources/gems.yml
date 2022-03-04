@@ -42,6 +42,7 @@ Item2:
     - '&7适用: &b剑/斧/弓'
   SuccessChance: 100
   SuccessLore: '&a物理伤害 +1.5'
+  SuccessBroadcast: true
   AllowInlayItemList:
     - WOODEN_SWORD
     - STONE_SWORD

@@ -3,7 +3,6 @@ package me.yurinan.plugins.yurigem.managers;
 import com.google.common.base.Charsets;
 import me.yurinan.plugins.yurigem.Main;
 import me.yurinan.plugins.yurigem.utils.ColorParser;
-import me.yurinan.plugins.yurigem.utils.DataUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -49,14 +48,13 @@ public class FileManager {
             Main.instance.saveResource("gems.yml", false);
         }
 
-        DataUtil dataUtil = new DataUtil();
-        dataUtil.getGemList().clear();
+        Main.instance.getGemList().clear();
         for (String str : getGemConfig().getKeys(false)) {
             if (!"Lore-Head".equalsIgnoreCase(str)) {
-                dataUtil.getGemList().add(ColorParser.parse(str));
+                Main.instance.getGemList().add(ColorParser.parse(str));
             }
         }
-        Main.log("&f读取到的宝石: &8" + dataUtil.getGemList().toString());
+        Main.log("&f读取到的宝石: &8" + Main.instance.getGemList().toString());
 
         for (int i = 1; i <= getGemConfig().getKeys(false).size(); ++i) {
             if (getGemConfig().getConfigurationSection("Item" + i) != null) {
@@ -68,8 +66,8 @@ public class FileManager {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 item.setItemMeta(meta);
                 item.setType(Material.valueOf(getGemConfig().getString("Item" + i + ".Type")));
-                dataUtil.getGemMap().put("Item" + i, item);
-                dataUtil.getGemNameCheckMap().put(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")), "Item" + i);
+                Main.instance.getGemMap().put("Item" + i, item);
+                Main.instance.getGemNameCheckMap().put(ColorParser.parse(getGemConfig().getString("Item" + i + ".DisplayName")), "Item" + i);
             }
         }
     }

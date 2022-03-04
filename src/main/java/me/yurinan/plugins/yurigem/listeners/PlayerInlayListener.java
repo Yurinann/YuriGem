@@ -5,7 +5,6 @@ import me.yurinan.plugins.yurigem.configurations.PluginMessages;
 import me.yurinan.plugins.yurigem.managers.FileManager;
 import me.yurinan.plugins.yurigem.managers.GemManager;
 import me.yurinan.plugins.yurigem.utils.ColorParser;
-import me.yurinan.plugins.yurigem.utils.DataUtil;
 import me.yurinan.plugins.yurigem.utils.MessageUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -35,7 +34,6 @@ public class PlayerInlayListener implements Listener {
     @EventHandler
     public void onPlayerInlay(InventoryClickEvent clickEvent) {
         FileConfiguration gemConfig = FileManager.getGemConfig();
-        DataUtil dataUtil = new DataUtil();
         // 判断是否使用右键点击 Inventory (1)
         if (clickEvent.getClick() == ClickType.RIGHT) {
             // 获取右键点击 Inventory 触发事件的玩家实例 (2)
@@ -43,12 +41,12 @@ public class PlayerInlayListener implements Listener {
             // 判断右键点击的物品不为 null 或 空气 (3)
             if (clickEvent.getCurrentItem() != null && clickEvent.getCurrentItem().getType() != Material.AIR) {
                 // 判断 ItemSelect Map 中是否有 Player (4)
-                if (dataUtil.getGemSelectMap().containsKey(player)) {
+                if (Main.instance.getGemSelectMap().containsKey(player)) {
                     clickEvent.setCancelled(true);
                     Material currentMaterial = Material.valueOf(String.valueOf(clickEvent.getCurrentItem().getType()));
                     ItemStack item = clickEvent.getCurrentItem();
                     if (item != null) {
-                        List<String> allowInlayItemList = new ArrayList<>(gemConfig.getStringList(dataUtil.getGemSelectMap().get(player) + ".AllowInlayItemList"));
+                        List<String> allowInlayItemList = new ArrayList<>(gemConfig.getStringList(Main.instance.getGemSelectMap().get(player) + ".AllowInlayItemList"));
                         int checkTime = 0;
                         for (String s : allowInlayItemList) {
                             if (Objects.equals(String.valueOf(currentMaterial).toUpperCase(), s)) {
@@ -59,16 +57,16 @@ public class PlayerInlayListener implements Listener {
                         if (checkTime != 1) {
                             MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.INLAY_NOT_ALLOWED);
                             clickEvent.setCancelled(true);
-                            dataUtil.getGemSelectMap().remove(player);
+                            Main.instance.getGemSelectMap().remove(player);
                             player.closeInventory();
                             return;
                         }
 
-                        String selectGem = dataUtil.getGemSelectMap().get(player);
+                        String selectGem = Main.instance.getGemSelectMap().get(player);
                         GemManager gemManager = new GemManager();
                         if (!gemManager.removeGem(player, ColorParser.parse(gemConfig.getString(selectGem + ".DisplayName")))) {
                             MessageUtil.send(player, PluginMessages.PREFIX + PluginMessages.CLICK_GEM_IS_NULL);
-                            dataUtil.getGemSelectMap().remove(player);
+                            Main.instance.getGemSelectMap().remove(player);
                             player.closeInventory();
                             return;
                         }
@@ -98,7 +96,7 @@ public class PlayerInlayListener implements Listener {
                             }
                             player.closeInventory();
                             player.updateInventory();
-                            dataUtil.getGemSelectMap().remove(player);
+                            Main.instance.getGemSelectMap().remove(player);
                             return;
                         }
 
@@ -120,7 +118,7 @@ public class PlayerInlayListener implements Listener {
                             if (loreLoc == -1) {
                                 list.add(gemDisplayName + "&a-" + successLore);
                             } else {
-                                list.add(loreLoc, gemDisplayName + "&a-" + successLore);
+                                list.add(loreLoc, gemDisplayName + " &a- " + successLore);
                             }
                             meta.setLore(list.stream().map(ColorParser::parse).collect(Collectors.toList()));
                             item.setItemMeta(meta);
@@ -133,12 +131,12 @@ public class PlayerInlayListener implements Listener {
                         }
                         player.closeInventory();
                         player.updateInventory();
-                        dataUtil.getGemSelectMap().remove(player);
+                        Main.instance.getGemSelectMap().remove(player);
                     }
                 }
                 String gem = this.checkItem(clickEvent.getCurrentItem());
                 if (gem != null) {
-                    dataUtil.getGemSelectMap().put(player, gem);
+                    Main.instance.getGemSelectMap().put(player, gem);
                     clickEvent.setCancelled(true);
                     player.closeInventory();
                     MessageUtil.send(player, PluginMessages.GEM_IS_SELECTED);
@@ -148,13 +146,12 @@ public class PlayerInlayListener implements Listener {
     }
 
     public String checkItem(ItemStack item) {
-        DataUtil dataUtil = new DataUtil();
         if (item != null && item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             if (meta.hasDisplayName()) {
                 String name = meta.getDisplayName();
-                if (dataUtil.getGemNameCheckMap().containsKey(name)) {
-                    return dataUtil.getGemNameCheckMap().get(name);
+                if (Main.instance.getGemNameCheckMap().containsKey(name)) {
+                    return Main.instance.getGemNameCheckMap().get(name);
                 }
             }
         }

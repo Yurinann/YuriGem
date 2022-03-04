@@ -4,7 +4,6 @@ import me.yurinan.plugins.yurigem.Main;
 import me.yurinan.plugins.yurigem.configurations.PluginMessages;
 import me.yurinan.plugins.yurigem.configurations.PluginPermissions;
 import me.yurinan.plugins.yurigem.managers.FileManager;
-import me.yurinan.plugins.yurigem.utils.DataUtil;
 import me.yurinan.plugins.yurigem.utils.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -30,7 +29,6 @@ public class CommandHandler implements TabExecutor {
     @Override
     @ParametersAreNonnullByDefault
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        DataUtil dataUtil = new DataUtil();
         if (sender.hasPermission(PluginPermissions.ADMIN)) {
             if (args.length == 0) {
                 MessageUtil.send(sender, PluginMessages.PREFIX + "&a请使用 /yurigem help 查看插件帮助!");
@@ -43,7 +41,7 @@ public class CommandHandler implements TabExecutor {
                     MessageUtil.send(sender, "&a▶ /yurigem reload - 重载配置文件");
                     return true;
                 } else if ("list".equalsIgnoreCase(args[0])) {
-                    MessageUtil.send(sender, PluginMessages.PREFIX + "&a当前可用的宝石列表: " + dataUtil.getGemList().toString());
+                    MessageUtil.send(sender, PluginMessages.PREFIX + "&a当前可用的宝石列表: " + Main.instance.getGemList().toString());
                 } else if ("reload".equalsIgnoreCase(args[0])) {
                     FileManager.reloadAllConfig();
                     MessageUtil.send(sender, PluginMessages.PREFIX + "配置文件已成功重载!");
@@ -58,13 +56,13 @@ public class CommandHandler implements TabExecutor {
                             MessageUtil.send(sender, PluginMessages.PREFIX + "&c指定的玩家可能不存在或已离线!");
                             return true;
                         }
-                        ItemStack item = dataUtil.getGemMap().get(args[1]);
+                        ItemStack item = Main.instance.getGemMap().get(args[1]);
                         if (item != null) {
                             item.setAmount(Integer.parseInt(args[2]));
                             player.getInventory().addItem(item);
                             MessageUtil.send(player, PluginMessages.PREFIX + "&a您获得了 &e" + args[2] + "个 " + item.getItemMeta().getDisplayName() + "&a!");
                         } else {
-                            MessageUtil.send(player, PluginMessages.PREFIX + "&c给予错误, 请检查!");
+                            MessageUtil.send(sender, PluginMessages.PREFIX + "&c给予错误, 请检查!");
                         }
                         return true;
                     } else {
@@ -84,7 +82,6 @@ public class CommandHandler implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        DataUtil dataUtil = new DataUtil();
         if (sender.hasPermission(PluginPermissions.ADMIN)) {
             switch (args.length) {
                 case 1: {
@@ -101,7 +98,7 @@ public class CommandHandler implements TabExecutor {
                 }
                 case 2: {
                     if ("give".equalsIgnoreCase(args[0])) {
-                        return dataUtil.getGemList();
+                        return Main.instance.getGemList();
                     }
                 }
                 case 3: {

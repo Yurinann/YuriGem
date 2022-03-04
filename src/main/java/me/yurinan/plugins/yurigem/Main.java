@@ -5,7 +5,6 @@ import me.yurinan.plugins.yurigem.listeners.PlayerInlayListener;
 import me.yurinan.plugins.yurigem.managers.ConfigManager;
 import me.yurinan.plugins.yurigem.managers.FileManager;
 import me.yurinan.plugins.yurigem.utils.ColorParser;
-import me.yurinan.plugins.yurigem.utils.DataUtil;
 import me.yurinan.plugins.yurigem.utils.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -19,6 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,9 +32,10 @@ public final class Main extends JavaPlugin {
 
     public static Main instance;
 
-    public static Map<String, String> ItemNameCheck;
-    public static List<String> GemList;
-    public static Map<String, ItemStack> Items;
+    private Map<Player, String> gemSelectMap;
+    private Map<String, String> gemNameCheckMap;
+    private Map<String, ItemStack> gemMap;
+    private List<String> gemList;
 
     @Override
     public void onEnable() {
@@ -41,8 +43,10 @@ public final class Main extends JavaPlugin {
         log("&f插件开始加载...");
         long startTime = System.currentTimeMillis();
         log("&f加载内部数据...");
-        DataUtil dataUtil = new DataUtil();
-        dataUtil.initPluginData();
+        gemSelectMap = new HashMap<>();
+        gemNameCheckMap = new HashMap<>();
+        gemMap = new HashMap<>();
+        gemList = new ArrayList<>();
         log("&f加载配置文件...");
         FileManager.initConfig();
         log("&f注册监听器...");
@@ -103,6 +107,22 @@ public final class Main extends JavaPlugin {
 
     public static void registerListener(Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, instance);
+    }
+
+    public Map<Player, String> getGemSelectMap() {
+        return gemSelectMap;
+    }
+
+    public Map<String, String> getGemNameCheckMap() {
+        return gemNameCheckMap;
+    }
+
+    public Map<String, ItemStack> getGemMap() {
+        return gemMap;
+    }
+
+    public List<String> getGemList() {
+        return gemList;
     }
 
 }
